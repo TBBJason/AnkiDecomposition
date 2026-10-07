@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------------------
+# NEVER commit Anki collections. These are personal study data and may contain
+# private notes. The test generator writes one into the working tree by default.
+# ---------------------------------------------------------------------------
+*.anki2
+*.anki2-journal
+*.anki2-wal
+*.anki21
+*.apkg
+*.colpkg
+collection.media/
+collection.media.db2
+
+# Extractor and analysis output — derived from a personal collection, so it is
+# also personal data. Never commit it.
+out/
+out_*/
+candidates.csv
+candidates.jsonl
+*.parquet
+
+# Secrets. API keys belong in the environment or a local untracked config.
+.env
+.env.*
+!.env.example
+*api_key*
+*apikey*
+secrets.json
+config.local.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Analysis notebooks — strip outputs before committing; they embed card content.
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
