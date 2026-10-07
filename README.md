@@ -85,9 +85,19 @@ The first question is not "how do I build this" but **"how many of my cards woul
 benefit?"** If the answer is under ~15%, this is a triage tool, not a decomposition tool,
 and that is a far cheaper thing to build.
 
+**Close Anki first** — SQLite may be mid-write, and you can end up with a torn copy.
+
 ```bash
-# 1. Close Anki, then copy your collection (never work on the live file)
+# 1. Copy your collection (never work on the live file). Pick your platform:
+
+# macOS
+cp ~/Library/Application\ Support/Anki2/User\ 1/collection.anki2 /tmp/col-copy.anki2
+
+# Linux
 cp ~/.local/share/Anki2/User\ 1/collection.anki2 /tmp/col-copy.anki2
+
+# Windows (PowerShell)
+copy "$env:APPDATA\Anki2\User 1\collection.anki2" "$env:TEMP\col-copy.anki2"
 
 # 2. Rank your struggling cards by time cost
 python3 m0_triage/extract_candidates.py /tmp/col-copy.anki2 --outdir out
@@ -96,8 +106,25 @@ python3 m0_triage/extract_candidates.py /tmp/col-copy.anki2 --outdir out
 python3 m0_triage/power_additive_design.py
 ```
 
-Needs only the Python 3 standard library. Full instructions, including Windows and macOS
-paths, in [`m0_triage/README.md`](m0_triage/README.md).
+If step 1 fails with *No such file or directory*, your profile is probably not named
+`User 1`. List the profiles you actually have and substitute the right name:
+
+```bash
+ls ~/Library/Application\ Support/Anki2/          # macOS
+ls ~/.local/share/Anki2/                          # Linux
+```
+
+Or locate the file directly:
+
+```bash
+find ~/Library/Application\ Support/Anki2 -name "collection.anki2"   # macOS
+```
+
+You can also find it from inside Anki: **Tools → Add-ons → View Files**, then go up one
+directory level.
+
+Needs only the Python 3 standard library. More detail in
+[`m0_triage/README.md`](m0_triage/README.md).
 
 Then hand-label your top 40 candidates using `triage_prompt.md` **before** looking at any
 LLM output, and compare. Your labels are the ground truth.
